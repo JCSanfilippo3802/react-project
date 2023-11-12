@@ -33,7 +33,7 @@ const makeDomo = async (req, res) => {
 
 const updateDomo = async (req, res) => {
   if (!req.body.name || !req.body.age || !req.body.level) {
-    return res.status(400).json({ error: 'Name, age, and level are required!'});
+    return res.status(400).json({ error: 'Name, age, and level are required!' });
   }
 
   const domoData = {
@@ -43,8 +43,10 @@ const updateDomo = async (req, res) => {
     owner: req.session.account._id,
   };
 
-  try{
-    await Domo.findOneAndUpdate({name: domoData.name, owner: domoData.owner},{age: domoData.age, level:domoData.level});
+  try {
+    await Domo.findOneAndUpdate(
+      { name: domoData.name, owner: domoData.owner }, { age: domoData.age, level: domoData.level }
+      );
     return res.status(202).json({
       name: domoData.name, age: domoData.age, level: domoData.level,
     });
