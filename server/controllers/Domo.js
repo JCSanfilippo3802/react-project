@@ -45,8 +45,8 @@ const updateDomo = async (req, res) => {
 
   try {
     await Domo.findOneAndUpdate(
-      { name: domoData.name, owner: domoData.owner }, { age: domoData.age, level: domoData.level }
-      );
+      { name: domoData.name, owner: domoData.owner }, 
+      { age: domoData.age, level: domoData.level });
     return res.status(202).json({
       name: domoData.name, age: domoData.age, level: domoData.level,
     });
