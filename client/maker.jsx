@@ -40,6 +40,26 @@ const DomoForm = (props) => {
     );
 }
 
+const UpdateForm = (props) => {
+    return (
+        <form id="updateForm"
+        onSubmit={handleDomo}
+        name="updateForm"
+        action="/update"
+        method="POST"
+        className="updateForm"
+        >
+            <label htmlFor="name">Name: </label>
+            <input id="domoName" type="text" name="name" placeholder="Domo Name" />
+            <label htmlFor="age">Age: </label>
+            <input id="domoAge" type="number" min="0" name="age" />
+            <label htmlFor="level">Level: </label>
+            <input id="domoLevel" type="number" min="0" name="level" />
+            <input className="updateDomoSubmit" type="submit" value="Update Domo" />
+        </form>
+    )
+}
+
 const DomoList = (props) => {
     if(props.domos.length === 0) {
         return (
@@ -50,13 +70,14 @@ const DomoList = (props) => {
     }
 
     const domoNodes = props.domos.map(domo => {
+
         return (
-            <div key={domo._id} className="domo">
-                <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace" />
-                <h3 className="domoName">Name: {domo.name} </h3>
-                <h3 className="domoAge"> Age: {domo.age} </h3>
-                <h3 className="domoLevel"> Level: {domo.level} </h3>
-            </div>
+                <div key={domo._id} className="domo">
+                    <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace" />
+                    <h3 className="domoName">Name: {domo.name} </h3>
+                    <h3 className="domoAge"> Age: {domo.age} </h3>
+                    <h3 className="domoLevel"> Level: {domo.level} </h3>
+                </div>
         );
     });
 
@@ -80,6 +101,11 @@ const init = () => {
     ReactDOM.render(
         <DomoForm />,
         document.getElementById('makeDomo')
+    );
+
+    ReactDOM.render(
+        <UpdateForm />,
+        document.getElementById('updateDomo')
     );
 
     ReactDOM.render(
