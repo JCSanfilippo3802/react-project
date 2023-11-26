@@ -1,15 +1,15 @@
 const models = require('../models');
 
-const { Domo } = models;
+const { File } = models;
 
 const makerPage = (req, res) => res.render('app');
 
-const makeDomo = async (req, res) => {
+const makeFile = async (req, res) => {
   if (!req.body.name || !req.body.age || !req.body.level) {
     return res.status(400).json({ error: 'Name, age, and level are required!' });
   }
 
-  const domoData = {
+  const fileData = {
     name: req.body.name,
     age: req.body.age,
     level: req.body.level,
@@ -17,26 +17,26 @@ const makeDomo = async (req, res) => {
   };
 
   try {
-    const newDomo = new Domo(domoData);
-    await newDomo.save();
+    const newFile = new File(fileData);
+    await newFile.save();
     return res.status(201).json({
-      name: newDomo.name, age: newDomo.age, level: newDomo.level,
+      name: newFile.name, age: newFile.age, level: newFile.level,
     });
   } catch (err) {
     console.log(err);
     if (err.code === 11000) {
-      return res.status(400).json({ error: 'Domo already exists!' });
+      return res.status(400).json({ error: 'File already exists!' });
     }
-    return res.status(500).json({ error: 'An error occured making domo!' });
+    return res.status(500).json({ error: 'An error occured making file!' });
   }
 };
 
-const updateDomo = async (req, res) => {
+const updateFile = async (req, res) => {
   if (!req.body.name || !req.body.age || !req.body.level) {
     return res.status(400).json({ error: 'Name, age, and level are required!' });
   }
 
-  const domoData = {
+  const fileData = {
     name: req.body.name,
     age: req.body.age,
     level: req.body.level,
@@ -44,33 +44,33 @@ const updateDomo = async (req, res) => {
   };
 
   try {
-    await Domo.findOneAndUpdate(
-      { name: domoData.name, owner: domoData.owner }, 
-      { age: domoData.age, level: domoData.level });
+    await File.findOneAndUpdate(
+      { name: fileData.name, owner: fileData.owner }, 
+      { age: fileData.age, level: fileData.level });
     return res.status(202).json({
-      name: domoData.name, age: domoData.age, level: domoData.level,
+      name: fileData.name, age: fileData.age, level: fileData.level,
     });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ error: 'An error occured updating domo!' });
+    return res.status(500).json({ error: 'An error occured updating file!' });
   }
 };
 
-const getDomos = async (req, res) => {
+const getFiles = async (req, res) => {
   try {
     const query = { owner: req.session.account._id };
-    const docs = await Domo.find(query).select('name age level').lean().exec();
+    const docs = await File.find(query).select('name age level').lean().exec();
 
-    return res.json({ domos: docs });
+    return res.json({ files: docs });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ error: 'Error retrieving domos!' });
+    return res.status(500).json({ error: 'Error retrieving files!' });
   }
 };
 
 module.exports = {
   makerPage,
-  makeDomo,
-  updateDomo,
-  getDomos,
+  makeFile,
+  updateFile,
+  getFiles,
 };

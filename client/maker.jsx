@@ -2,40 +2,40 @@ const helper = require('./helper.js');
 const React = require('react');
 const ReactDOM = require('react-dom');
 
-const handleDomo = (e) => {
+const handleFile = (e) => {
     e.preventDefault();
     helper.hideError();
 
-    const name = e.target.querySelector('#domoName').value;
-    const age = e.target.querySelector("#domoAge").value;
-    const level = e.target.querySelector("#domoLevel").value;
+    const name = e.target.querySelector('#fileName').value;
+    const age = e.target.querySelector("#fileAge").value;
+    const level = e.target.querySelector("#fileLevel").value;
 
     if(!name || !age || !level) {
         helper.handleError('All fields are required!');
         return false;
     }
 
-    helper.sendPost(e.target.action, {name, age, level}, loadDomosFromServer);
+    helper.sendPost(e.target.action, {name, age, level}, loadFilesFromServer);
 
     return false;
 }
 
-const DomoForm = (props) => {
+const FileForm = (props) => {
     return (
-        <form id="domoForm"
-            onSubmit={handleDomo}
-            name="domoForm"
+        <form id="fileForm"
+            onSubmit={handleFile}
+            name="fileForm"
             action="/maker"
             method="POST"
-            className="domoForm"
+            className="fileForm"
         >
             <label htmlFor="name">Name: </label>
-            <input id="domoName" type="text" name="name" placeholder="Domo Name" />
+            <input id="fileName" type="text" name="name" placeholder="File Name" />
             <label htmlFor="age">Age: </label>
-            <input id="domoAge" type="number" min="0" name="age" />
+            <input id="fileAge" type="number" min="0" name="age" />
             <label htmlFor="level">Level: </label>
-            <input id="domoLevel" type="number" min="0" name="level" />
-            <input className="makeDomoSubmit" type="submit" value="Make Domo" />
+            <input id="fileLevel" type="number" min="0" name="level" />
+            <input className="makeFileSubmit" type="submit" value="Make File" />
         </form>
     );
 }
@@ -43,77 +43,77 @@ const DomoForm = (props) => {
 const UpdateForm = (props) => {
     return (
         <form id="updateForm"
-        onSubmit={handleDomo}
+        onSubmit={handleFile}
         name="updateForm"
         action="/update"
         method="POST"
         className="updateForm"
         >
             <label htmlFor="name">Name: </label>
-            <input id="domoName" type="text" name="name" placeholder="Domo Name" />
+            <input id="fileName" type="text" name="name" placeholder="File Name" />
             <label htmlFor="age">Age: </label>
-            <input id="domoAge" type="number" min="0" name="age" />
+            <input id="fileAge" type="number" min="0" name="age" />
             <label htmlFor="level">Level: </label>
-            <input id="domoLevel" type="number" min="0" name="level" />
-            <input className="updateDomoSubmit" type="submit" value="Update Domo" />
+            <input id="fileLevel" type="number" min="0" name="level" />
+            <input className="updateFileSubmit" type="submit" value="Update File" />
         </form>
     )
 }
 
-const DomoList = (props) => {
-    if(props.domos.length === 0) {
+const FileList = (props) => {
+    if(props.files.length === 0) {
         return (
-            <div className = "domoList">
-                <h3 className="emptyDomo">No Domos Yet!</h3>
+            <div className = "fileList">
+                <h3 className="emptyFile">No Files Yet!</h3>
             </div>
         );
     }
 
-    const domoNodes = props.domos.map(domo => {
+    const fileNodes = props.files.map(file => {
 
         return (
-                <div key={domo._id} className="domo">
-                    <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace" />
-                    <h3 className="domoName">Name: {domo.name} </h3>
-                    <h3 className="domoAge"> Age: {domo.age} </h3>
-                    <h3 className="domoLevel"> Level: {domo.level} </h3>
+                <div key={file._id} className="file">
+                    <img src="/assets/img/placeholder.png" alt="placeholder" className="fileFace" />
+                    <h3 className="fileName">Name: {file.name} </h3>
+                    <h3 className="fileAge"> Age: {file.age} </h3>
+                    <h3 className="fileLevel"> Level: {file.level} </h3>
                 </div>
         );
     });
 
     return (
-        <div className="domoList">
-            {domoNodes}
+        <div className="fileList">
+            {fileNodes}
         </div>
     );
 }
 
-const loadDomosFromServer = async () => {
-    const response = await fetch('/getDomos');
+const loadFilesFromServer = async () => {
+    const response = await fetch('/getFiles');
     const data = await response.json();
     ReactDOM.render(
-        <DomoList domos={data.domos} />,
-        document.getElementById('domos')
+        <FileList files={data.files} />,
+        document.getElementById('files')
     );
 }
 
 const init = () => {
     ReactDOM.render(
-        <DomoForm />,
-        document.getElementById('makeDomo')
+        <FileForm />,
+        document.getElementById('makeFile')
     );
 
     ReactDOM.render(
         <UpdateForm />,
-        document.getElementById('updateDomo')
+        document.getElementById('updateFile')
     );
 
     ReactDOM.render(
-        <DomoList domos={[]} />,
-        document.getElementById('domos')
+        <FileList files={[]} />,
+        document.getElementById('files')
     );
 
-    loadDomosFromServer();
+    loadFilesFromServer();
 }
 
 window.onload = init;
