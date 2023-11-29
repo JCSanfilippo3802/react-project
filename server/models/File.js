@@ -10,14 +10,17 @@ const FileSchema = new mongoose.Schema({
     trim: true,
     set: setName,
   },
-  age: {
-    type: Number,
-    min: 0,
+  data: {
+    type: Image,
     required: true,
   },
-  level: {
+  year: {
     type: Number,
-    min: 0,
+    min: 1990,
+    required: true,
+  },
+  desc: {
+    type: String,
     required: true,
   },
   owner: {
@@ -33,8 +36,8 @@ const FileSchema = new mongoose.Schema({
 
 FileSchema.statics.toAPI = (doc) => ({
   name: doc.name,
-  age: doc.age,
-  level: doc.level,
+  year: doc.year,
+  desc: doc.desc,
 });
 
 const FileModel = mongoose.model('File', FileSchema);
