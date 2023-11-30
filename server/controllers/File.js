@@ -1,18 +1,22 @@
 const models = require('../models');
 
 const { File } = models;
+const { Image } = models;
 
 const makerPage = (req, res) => res.render('app');
 
 const makeFile = async (req, res) => {
-  if (!req.body.name || !req.body.age || !req.body.level) {
-    return res.status(400).json({ error: 'Name, age, and level are required!' });
+  if (!req.body.name || !req.files || !req.body.year || !req.body.author) {
+    return res.status(400).json({ error: 'All fields are required!' });
   }
 
+  const dataId = uploadImage(req, res);
+  
   const fileData = {
     name: req.body.name,
+    data: dataId,
     year: req.body.year,
-    desc: req.body.desc,
+    author: req.body.author,
     owner: req.session.account._id,
   };
 
@@ -20,7 +24,7 @@ const makeFile = async (req, res) => {
     const newFile = new File(fileData);
     await newFile.save();
     return res.status(201).json({
-      name: newFile.name, data: newFile.data, year: newFile.year, desc: newFile.desc,
+      name: newFile.name, data: newFile.data, year: newFile.year, author: newFile.author,
     });
   } catch (err) {
     console.log(err);
@@ -32,23 +36,23 @@ const makeFile = async (req, res) => {
 };
 
 const updateFile = async (req, res) => {
-  if (!req.body.name || !req.body.year || !req.body.desc) {
+  if (!req.body.name || !req.body.year || !req.body.author) {
     return res.status(400).json({ error: 'All information is required!' });
   }
 
   const fileData = {
     name: req.body.name,
     year: req.body.year,
-    desc: req.body.desc,
+    author: req.body.author,
     owner: req.session.account._id,
   };
 
   try {
     await File.findOneAndUpdate(
       { name: fileData.name, owner: fileData.owner }, 
-      { year: fileData.year, desc: fileData.desc });
+      { year: fileData.year, author: fileData.author });
     return res.status(202).json({
-      name: fileData.name, year: fileData.year, desc: fileData.desc,
+      name: fileData.name, year: fileData.year, author: fileData.author,
     });
   } catch (err) {
     console.log(err);
@@ -56,29 +60,29 @@ const updateFile = async (req, res) => {
   }
 };
 
-const uploadFile = async (req, res) => {
+const uploadImage = async (req, res) => {
   if (!req.files || !req.files.sampleFile) {
-    return res.status(400).json({ error: 'No files were uploaded' });
+    return res.status(400).json({ error: 'No images were uploaded' });
   }
 
   const { sampleFile } = req.files;
 
   try {
-    const newFile = new File(sampleFile);
-    const doc = await newFile.save();
+    const newImage = new Image(sampleFile);
+    const doc = await newImage.save();
     return res.status(201).json({
-      message: 'File stored successfully!',
+      message: 'Image stored successfully!',
       fileId: doc._id,
     });
   } catch (err) {
     console.log(err);
     return res.status(400).json({
-      error: 'Something went wrong uploading file!',
+      error: 'Something went wrong uploading image!',
     });
   }
 };
 
-const retrieveFile = async (req, res) => {
+const retrieveImage = async (req, res) => {
   if (!req.query._id) {
     return res.status(400).json({ error: 'Missing file id!' });
   }
@@ -111,7 +115,7 @@ const getFiles = async (req, res) => {
   }
   try {
     const query = { owner: req.session.account._id };
-    const docs = await File.find(query).select('name year desc').lean().exec();
+    const docs = await File.find(query).select('name year author').lean().exec();
 
     return res.json({ files: docs });
   } catch (err) {
@@ -125,4 +129,5 @@ module.exports = {
   makeFile,
   updateFile,
   getFiles,
+  retrieveImage,
 };

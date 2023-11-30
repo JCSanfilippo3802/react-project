@@ -3,7 +3,7 @@ const _ = require('underscore');
 
 const setName = (name) => _.escape(name).trim();
 
-const FileSchema = new mongoose.Schema({
+const ImageSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -21,6 +21,6 @@ const FileSchema = new mongoose.Schema({
   },
 });
 
-const FileModel = mongoose.model('FileModel', FileSchema);
+const ImageModel = mongoose.model('ImageModel', ImageSchema);
 
-module.exports = FileModel;
+module.exports = ImageModel;

@@ -15,7 +15,7 @@ const handleFile = (e) => {
         return false;
     }
 
-    helper.sendPost(e.target.action, {name, age, level}, loadFilesFromServer);
+    helper.sendPost(e.target.action, {name, data, year, author}, loadFilesFromServer);
 
     return false;
 }
@@ -31,10 +31,12 @@ const FileForm = (props) => {
         >
             <label htmlFor="name">Name: </label>
             <input id="fileName" type="text" name="name" placeholder="File Name" />
-            <label htmlFor="age">Age: </label>
-            <input id="fileAge" type="number" min="0" name="age" />
-            <label htmlFor="level">Level: </label>
-            <input id="fileLevel" type="number" min="0" name="level" />
+            <label htmlFor="data">Image: </label>
+            <input id="fileData" type="file" name="imageData"/>
+            <label htmlFor="year">Year: </label>
+            <input id="fileYear" type="number" min="1990" name="year" />
+            <label htmlFor="author">Author: </label>
+            <input id="fileAuthor" type="text" min="0" name="author" />
             <input className="makeFileSubmit" type="submit" value="Make File" />
         </form>
     );
@@ -51,10 +53,10 @@ const UpdateForm = (props) => {
         >
             <label htmlFor="name">Name: </label>
             <input id="fileName" type="text" name="name" placeholder="File Name" />
-            <label htmlFor="age">Age: </label>
-            <input id="fileAge" type="number" min="0" name="age" />
-            <label htmlFor="level">Level: </label>
-            <input id="fileLevel" type="number" min="0" name="level" />
+            <label htmlFor="year">Year: </label>
+            <input id="fileYear" type="number" min="0" name="age" />
+            <label htmlFor="author">Author: </label>
+            <input id="fileAuthor" type="text" min="0" name="author" />
             <input className="updateFileSubmit" type="submit" value="Update File" />
         </form>
     )
@@ -64,7 +66,7 @@ const FileList = (props) => {
     if(props.files.length === 0) {
         return (
             <div className = "fileList">
-                <h3 className="emptyFile">No Files Yet!</h3>
+                <h3 className="emptyFile">No Images Yet!</h3>
             </div>
         );
     }
@@ -72,11 +74,11 @@ const FileList = (props) => {
     const fileNodes = props.files.map(file => {
 
         return (
-                <div key={file._id} className="file">
+                <div key={file._id} className="file" onclick="">
                     <img src="/assets/img/placeholder.png" alt="placeholder" className="fileFace" />
                     <h3 className="fileName">Name: {file.name} </h3>
-                    <h3 className="fileAge"> Age: {file.age} </h3>
-                    <h3 className="fileLevel"> Level: {file.level} </h3>
+                    <h3 className="fileYear"> Year: {file.year} </h3>
+                    <h3 className="fileAuthor"> Author: {file.author} </h3>
                 </div>
         );
     });
@@ -94,6 +96,14 @@ const loadFilesFromServer = async () => {
     ReactDOM.render(
         <FileList files={data.files} />,
         document.getElementById('files')
+    );
+}
+
+const loadFileImageFromServer = async () => {
+    const response = await fetch('/getImage');
+    const data = await response.json();
+    ReactDOM.render(
+        
     );
 }
 

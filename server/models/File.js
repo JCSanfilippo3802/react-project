@@ -11,7 +11,7 @@ const FileSchema = new mongoose.Schema({
     set: setName,
   },
   data: {
-    type: Image,
+    type: ObjectId,
     required: true,
   },
   year: {
@@ -19,7 +19,7 @@ const FileSchema = new mongoose.Schema({
     min: 1990,
     required: true,
   },
-  desc: {
+  author: {
     type: String,
     required: true,
   },
@@ -36,8 +36,9 @@ const FileSchema = new mongoose.Schema({
 
 FileSchema.statics.toAPI = (doc) => ({
   name: doc.name,
+  data: doc.data,
   year: doc.year,
-  desc: doc.desc,
+  author: doc.author,
 });
 
 const FileModel = mongoose.model('File', FileSchema);
