@@ -1,31 +1,27 @@
 const mongoose = require('mongoose');
 const _ = require('underscore');
+const dataObject = require('./Image');
 
 const setName = (name) => _.escape(name).trim();
 
 const FileSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
     trim: true,
     set: setName,
   },
   data: {
-    type: ObjectId,
-    required: true,
+    type: { type: mongoose.Types.ObjectId, ref: dataObject },
   },
   year: {
     type: Number,
     min: 1990,
-    required: true,
   },
   author: {
     type: String,
-    required: true,
   },
   owner: {
     type: mongoose.Schema.ObjectId,
-    required: true,
     ref: 'Account',
   },
   createdDate: {

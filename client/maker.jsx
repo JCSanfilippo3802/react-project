@@ -7,10 +7,11 @@ const handleFile = (e) => {
     helper.hideError();
 
     const name = e.target.querySelector('#fileName').value;
-    const age = e.target.querySelector("#fileAge").value;
-    const level = e.target.querySelector("#fileLevel").value;
+    const data = e.target.querySelector("#fileData").value;
+    const year = e.target.querySelector("#fileYear").value;
+    const author = e.target.querySelector("#fileAuthor").value;
 
-    if(!name || !age || !level) {
+    if(!name || !data || !year || !author) {
         helper.handleError('All fields are required!');
         return false;
     }
@@ -34,9 +35,9 @@ const FileForm = (props) => {
             <label htmlFor="data">Image: </label>
             <input id="fileData" type="file" name="imageData"/>
             <label htmlFor="year">Year: </label>
-            <input id="fileYear" type="number" min="1990" name="year" />
+            <input id="fileYear" type="number" min="1990" value="2023" name="year" />
             <label htmlFor="author">Author: </label>
-            <input id="fileAuthor" type="text" min="0" name="author" />
+            <input id="fileAuthor" type="text" name="author" />
             <input className="makeFileSubmit" type="submit" value="Make File" />
         </form>
     );
@@ -54,9 +55,9 @@ const UpdateForm = (props) => {
             <label htmlFor="name">Name: </label>
             <input id="fileName" type="text" name="name" placeholder="File Name" />
             <label htmlFor="year">Year: </label>
-            <input id="fileYear" type="number" min="0" name="age" />
+            <input id="fileYear" type="number" min="1990" value="2023" name="year" />
             <label htmlFor="author">Author: </label>
-            <input id="fileAuthor" type="text" min="0" name="author" />
+            <input id="fileAuthor" type="text" name="author" />
             <input className="updateFileSubmit" type="submit" value="Update File" />
         </form>
     )
@@ -74,7 +75,7 @@ const FileList = (props) => {
     const fileNodes = props.files.map(file => {
 
         return (
-                <div key={file._id} className="file" onclick="">
+                <div key={file._id} className="file">
                     <img src="/assets/img/placeholder.png" alt="placeholder" className="fileFace" />
                     <h3 className="fileName">Name: {file.name} </h3>
                     <h3 className="fileYear"> Year: {file.year} </h3>
@@ -96,14 +97,6 @@ const loadFilesFromServer = async () => {
     ReactDOM.render(
         <FileList files={data.files} />,
         document.getElementById('files')
-    );
-}
-
-const loadFileImageFromServer = async () => {
-    const response = await fetch('/getImage');
-    const data = await response.json();
-    ReactDOM.render(
-        
     );
 }
 

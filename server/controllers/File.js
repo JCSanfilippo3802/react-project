@@ -5,13 +5,35 @@ const { Image } = models;
 
 const makerPage = (req, res) => res.render('app');
 
+const uploadImage = async (req, res) => {
+  if (!req.files || !req.files.sampleFile) {
+    return res.status(400).json({ error: 'No images were uploaded' });
+  }
+
+  const { sampleFile } = req.files;
+
+  try {
+    const newImage = new Image(sampleFile);
+    const doc = await newImage.save();
+    return res.status(201).json({
+      message: 'Image stored successfully!',
+      fileId: doc._id,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({
+      error: 'Something went wrong uploading image!',
+    });
+  }
+};
+
 const makeFile = async (req, res) => {
   if (!req.body.name || !req.files || !req.body.year || !req.body.author) {
     return res.status(400).json({ error: 'All fields are required!' });
   }
 
   const dataId = uploadImage(req, res);
-  
+
   const fileData = {
     name: req.body.name,
     data: dataId,
@@ -49,8 +71,9 @@ const updateFile = async (req, res) => {
 
   try {
     await File.findOneAndUpdate(
-      { name: fileData.name, owner: fileData.owner }, 
-      { year: fileData.year, author: fileData.author });
+      { name: fileData.name, owner: fileData.owner },
+      { year: fileData.year, author: fileData.author },
+    );
     return res.status(202).json({
       name: fileData.name, year: fileData.year, author: fileData.author,
     });
@@ -60,54 +83,32 @@ const updateFile = async (req, res) => {
   }
 };
 
-const uploadImage = async (req, res) => {
-  if (!req.files || !req.files.sampleFile) {
-    return res.status(400).json({ error: 'No images were uploaded' });
-  }
+// const retrieveImage = async (req, res) => {
+//   if (!req.query._id) {
+//     return res.status(400).json({ error: 'Missing file id!' });
+//   }
 
-  const { sampleFile } = req.files;
+//   let doc;
+//   try {
+//     doc = await File.findOne({ _id: req.query._id }).exec();
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(400).json({ error: 'Something went wrong retrieving file!' });
+//   }
 
-  try {
-    const newImage = new Image(sampleFile);
-    const doc = await newImage.save();
-    return res.status(201).json({
-      message: 'Image stored successfully!',
-      fileId: doc._id,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(400).json({
-      error: 'Something went wrong uploading image!',
-    });
-  }
-};
+//   if (!doc) {
+//     return res.status(404).json({ error: 'File not found!' });
+//   }
 
-const retrieveImage = async (req, res) => {
-  if (!req.query._id) {
-    return res.status(400).json({ error: 'Missing file id!' });
-  }
+//   res.set({
+//     'Content-Type': doc.mimetype,
 
-  let doc;
-  try {
-    doc = await File.findOne({ _id: req.query._id }).exec();
-  } catch (err) {
-    console.log(err);
-    return res.status(400).json({ error: 'Something went wrong retrieving file!' });
-  }
+//     'Content-Length': doc.size,
+//     'Content-Disposition': `filename="${doc.name}"`, /* `attachment; filename="${doc.name}"` */
+//   });
 
-  if (!doc) {
-    return res.status(404).json({ error: 'File not found!' });
-  }
-
-  res.set({
-    'Content-Type': doc.mimetype,
-
-    'Content-Length': doc.size,
-    'Content-Disposition': `filename="${doc.name}"`, /* `attachment; filename="${doc.name}"` */
-  });
-
-  return res.send(doc.data);
-};
+//   return res.send(doc.data);
+// };
 
 const getFiles = async (req, res) => {
   if (!req.query._id) {
@@ -115,7 +116,7 @@ const getFiles = async (req, res) => {
   }
   try {
     const query = { owner: req.session.account._id };
-    const docs = await File.find(query).select('name year author').lean().exec();
+    const docs = await File.find(query).select('name data year author').lean().exec();
 
     return res.json({ files: docs });
   } catch (err) {
@@ -129,5 +130,5 @@ module.exports = {
   makeFile,
   updateFile,
   getFiles,
-  retrieveImage,
+  // retrieveImage,
 };
