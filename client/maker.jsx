@@ -6,17 +6,21 @@ const handleFile = (e) => {
     e.preventDefault();
     helper.hideError();
 
-    const name = e.target.querySelector('#fileName').value;
-    const data = e.target.querySelector("#fileData").value;
+    const name = e.target.querySelector("#fileName").value;
+    const imageData = e.target.querySelector("#fileData").value;
     const year = e.target.querySelector("#fileYear").value;
     const author = e.target.querySelector("#fileAuthor").value;
 
-    if(!name || !data || !year || !author) {
+    if(!name || !imageData || !year || !author) {
         helper.handleError('All fields are required!');
         return false;
     }
 
-    helper.sendPost(e.target.action, {name, data, year, author}, loadFilesFromServer);
+    const carrier = new FormData(e.target);
+
+    //If there's no data here, it would get the associated data since it'd be update. If there's no data at all, it's caught later when the image is being uploaded.
+
+    helper.sendPost(e.target.action, {name, carrier, year, author}, loadFilesFromServer);
 
     return false;
 }
@@ -35,7 +39,7 @@ const FileForm = (props) => {
             <label htmlFor="data">Image: </label>
             <input id="fileData" type="file" name="imageData"/>
             <label htmlFor="year">Year: </label>
-            <input id="fileYear" type="number" min="1990" value="2023" name="year" />
+            <input id="fileYear" type="number" min="1990" name="year" />
             <label htmlFor="author">Author: </label>
             <input id="fileAuthor" type="text" name="author" />
             <input className="makeFileSubmit" type="submit" value="Make File" />
@@ -43,6 +47,7 @@ const FileForm = (props) => {
     );
 }
 
+//If there's no file data, it would get the associated data
 const UpdateForm = (props) => {
     return (
         <form id="updateForm"
@@ -55,7 +60,7 @@ const UpdateForm = (props) => {
             <label htmlFor="name">Name: </label>
             <input id="fileName" type="text" name="name" placeholder="File Name" />
             <label htmlFor="year">Year: </label>
-            <input id="fileYear" type="number" min="1990" value="2023" name="year" />
+            <input id="fileYear" type="number" min="1990" name="year" />
             <label htmlFor="author">Author: </label>
             <input id="fileAuthor" type="text" name="author" />
             <input className="updateFileSubmit" type="submit" value="Update File" />

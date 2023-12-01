@@ -6,14 +6,15 @@ const { Image } = models;
 const makerPage = (req, res) => res.render('app');
 
 const uploadImage = async (req, res) => {
-  if (!req.files || !req.files.sampleFile) {
+  if (!req.body.carrier.files || !req.body.carrier.files.imageData) {
     return res.status(400).json({ error: 'No images were uploaded' });
   }
 
-  const { sampleFile } = req.files;
+  const { imageData } = req.body.carrier.files;
 
   try {
-    const newImage = new Image(sampleFile);
+    const newImage = new Image(imageData);
+
     const doc = await newImage.save();
     return res.status(201).json({
       message: 'Image stored successfully!',
@@ -28,8 +29,9 @@ const uploadImage = async (req, res) => {
 };
 
 const makeFile = async (req, res) => {
-  if (!req.body.name || !req.files || !req.body.year || !req.body.author) {
-    return res.status(400).json({ error: 'All fields are required!' });
+  if (!req.body.carrier.files || !req.body.carrier.files.imageData
+    || !req.body.name || !req.body.year || !req.body.author) {
+    return res.status(400).json({ error: 'All info is required!' });
   }
 
   const dataId = uploadImage(req, res);
@@ -111,9 +113,6 @@ const updateFile = async (req, res) => {
 // };
 
 const getFiles = async (req, res) => {
-  if (!req.query._id) {
-    return res.status(400).json({ error: 'Missing file id!' });
-  }
   try {
     const query = { owner: req.session.account._id };
     const docs = await File.find(query).select('name data year author').lean().exec();

@@ -47,10 +47,17 @@ nav:nth-child(1) {
     background-color: #20964d;
 }
 
+.fileForm {
+    width: 1200px;
+}
+
+.updateForm {
+    width: 900px;
+}
+
 .fileForm, .updateForm {
     border: 2px solid #378053;
     height: 35px;
-    width: 900px;
     margin-top:0px;
     padding-top:10px;
     background-color: #73eba1;
