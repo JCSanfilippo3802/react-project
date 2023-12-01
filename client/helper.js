@@ -35,6 +35,32 @@ const handleError = (message) => {
     }
   };
     
+  const uploadFile = async (e, handler) => {
+    e.preventDefault();
+
+    const response = await fetch('/upload',{
+        method: 'POST',
+        body: new FormData(e),
+    });
+
+    const result = await response.json();
+    document.getElementById('messages').classList.add('hidden');
+  
+    if(result.redirect) {
+      window.location = result.redirect;
+    }
+  
+    if(result.error) {
+      handleError(result.error);
+    }
+
+    if(handler) {
+        handler(result);
+    }
+
+    return false;
+  };
+
   const hideError = () => {
     document.getElementById('message').classList.add('hidden');
    };
@@ -42,5 +68,6 @@ const handleError = (message) => {
    module.exports = {
     handleError,
     sendPost,
+    uploadFile,
     hideError,
    };
