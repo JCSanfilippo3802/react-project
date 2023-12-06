@@ -17,6 +17,8 @@ const router = (app) => {
   app.post('/update', mid.requiresLogin, controllers.File.updateFile);
 
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
+
+  app.get('*', controllers.NotFound.NotFound());
 };
 
 module.exports = router;
