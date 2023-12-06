@@ -18,7 +18,7 @@ const handleFile = (e) => {
         }
 
         helper.uploadFile(e.target, (obj) => {
-            const dataId = obj._id;
+            const dataId = obj.fileId;
             helper.sendPost(e.target.action, {name, dataId, year, author}, loadFilesFromServer);
         });
     }
