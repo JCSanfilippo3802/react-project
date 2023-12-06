@@ -3,6 +3,7 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 
 const handleFile = (e) => {
+    e.preventDefault();
     helper.hideError();
 
     const name = e.target.querySelector("#fileName").value;

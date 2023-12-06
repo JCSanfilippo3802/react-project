@@ -2,7 +2,8 @@ const helper = require('./helper.js');
 const React = require('react');
 const ReactDOM = require('react-dom');
 
-handlePassword = (e) => {
+const handlePassword = (e) => {
+    e.preventDefault();
     helper.hideError();
 
     const pass = e.target.querySelector('#pass').value;
