@@ -36,7 +36,6 @@ const handleError = (message) => {
   };
     
   const uploadFile = async (e, handler) => {
-    e.preventDefault();
 
     const response = await fetch('/upload',{
         method: 'POST',

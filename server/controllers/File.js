@@ -6,11 +6,11 @@ const { Image } = models;
 const makerPage = (req, res) => res.render('app');
 
 const uploadImage = async (req, res) => {
-  if (!req.body.carrier.files || !req.body.carrier.files.imageData) {
+  if (!req.files || !req.files.imageData) {
     return res.status(400).json({ error: 'No images were uploaded' });
   }
 
-  const { imageData } = req.body.carrier.files;
+  const { imageData } = req.files;
 
   try {
     const newImage = new Image(imageData);
@@ -82,31 +82,31 @@ const updateFile = async (req, res) => {
   }
 };
 
-// const retrieveImage = async (req, res) => {
-//   if (!req.query._id) {
-//     return res.status(400).json({ error: 'Missing file id!' });
-//   }
+const retrieveImage = async (req, res) => {
+  if (!req.query._id) {
+    return res.status(400).json({ error: 'Missing file id!' });
+  }
 
-//   let doc;
-//   try {
-//     doc = await File.findOne({ _id: req.query._id }).exec();
-//   } catch (err) {
-//     console.log(err);
-//     return res.status(400).json({ error: 'Something went wrong retrieving file!' });
-//   }
+  let doc;
+  try {
+    doc = await File.findOne({ _id: req.query._id }).exec();
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ error: 'Something went wrong retrieving file!' });
+  }
 
-//   if (!doc) {
-//     return res.status(404).json({ error: 'File not found!' });
-//   }
+  if (!doc) {
+    return res.status(404).json({ error: 'File not found!' });
+  }
 
-//   res.set({
-//     'Content-Type': doc.mimetype,
-//     'Content-Length': doc.size,
-//     'Content-Disposition': attachment; `filename="${doc.name}"`,
-//   });
+  res.set({
+    'Content-Type': doc.mimetype,
+    'Content-Length': doc.size,
+    'Content-Disposition': `attachment; filename="${doc.name}"`,
+  });
 
-//   return res.send(doc.data);
-// };
+  return res.send(doc.data);
+};
 
 const getFiles = async (req, res) => {
   try {
@@ -126,5 +126,5 @@ module.exports = {
   uploadImage,
   updateFile,
   getFiles,
-  // retrieveImage,
+  retrieveImage,
 };

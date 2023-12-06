@@ -3,7 +3,6 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 
 const handleFile = (e) => {
-    e.preventDefault();
     helper.hideError();
 
     const name = e.target.querySelector("#fileName").value;
@@ -11,18 +10,23 @@ const handleFile = (e) => {
     const year = e.target.querySelector("#fileYear").value;
     const author = e.target.querySelector("#fileAuthor").value;
 
-    if(!name || !imageData || !year || !author) {
-        helper.handleError('All fields are required!');
-        return false;
-    }
-
     if(e.target.id = "fileForm"){
+        if(!name || !imageData || !year || !author) {
+            helper.handleError('All fields are required!');
+            return false;
+        }
+
         helper.uploadFile(e.target, (obj) => {
             const dataId = obj._id;
             helper.sendPost(e.target.action, {name, dataId, year, author}, loadFilesFromServer);
         });
     }
     else{
+        if(!name || !year || !author) {
+            helper.handleError('All fields are required!');
+            return false;
+        }
+
         helper.sendPost(e.target.action, {name, year, author}, loadFilesFromServer);
     }
 

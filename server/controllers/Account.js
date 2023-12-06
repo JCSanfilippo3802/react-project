@@ -4,9 +4,32 @@ const { Account } = models;
 
 const loginPage = (req, res) => res.render('login');
 
+const passwordPage = (req, res) => res.render('password');
+
 const logout = (req, res) => {
   req.session.destroy();
   res.redirect('/');
+};
+
+const changePassword = async (req, res) => {
+  const pass = `${req.body.pass}`;
+  const pass2 = `${req.body.pass2}`;
+
+  if (pass !== pass2) {
+    return res.status(400).json({ error: 'Passwords do not match!' });
+  }
+
+  try {
+    const hash = await Account.generateHash(pass);
+    await Account.findOneAndUpdate({ username: req.session.account.username }, { password: hash });
+    return res.json({ redirect: '/maker' });
+  } catch (err) {
+    console.log(err);
+    if (err.code === 11000) {
+      return res.status(400).json({ error: 'Username already in use!' });
+    }
+    return res.status(500).json({ error: 'An error occured!' });
+  }
 };
 
 const login = (req, res) => {
@@ -61,4 +84,6 @@ module.exports = {
   login,
   logout,
   signup,
+  changePassword,
+  passwordPage,
 };

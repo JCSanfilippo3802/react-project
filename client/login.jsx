@@ -3,7 +3,6 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 
 const handleLogin = (e) => {
-    e.preventDefault();
     helper.hideError();
 
     const username = e.target.querySelector('#user').value;
@@ -20,7 +19,6 @@ const handleLogin = (e) => {
 }
 
 handleSignup = (e) => {
-    e.preventDefault();
     helper.hideError();
 
     const username = e.target.querySelector('#user').value;
@@ -85,14 +83,12 @@ const init = () => {
     const signupButton = document.getElementById('signupButton');
 
     loginButton.addEventListener('click', (e) => {
-        e.preventDefault();
         ReactDOM.render(<LoginWIndow />,
             document.getElementById('content'));
         return false;
     });
 
     signupButton.addEventListener('click', (e) => {
-        e.preventDefault();
         ReactDOM.render(<SignupWindow />,
             document.getElementById('content'));
         return false;

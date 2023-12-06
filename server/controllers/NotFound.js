@@ -1,5 +1,5 @@
-const NotFound = (req, res) => res.render('notfound');
+const missingPage = (req, res) => res.render('notfound');
 
 module.exports = {
-  NotFound,
+  missingPage,
 };
