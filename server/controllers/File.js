@@ -29,16 +29,13 @@ const uploadImage = async (req, res) => {
 };
 
 const makeFile = async (req, res) => {
-  if (!req.body.carrier.files || !req.body.carrier.files.imageData
-    || !req.body.name || !req.body.year || !req.body.author) {
-    return res.status(400).json({ error: 'All info is required!' });
+  if (!req.body.name || !req.body.dataId || !req.body.year || !req.body.author) {
+    return res.status(400).json({ error: 'Data missing!' });
   }
-
-  const dataId = uploadImage(req, res);
 
   const fileData = {
     name: req.body.name,
-    data: dataId,
+    data: req.body.dataId,
     year: req.body.year,
     author: req.body.author,
     owner: req.session.account._id,
@@ -104,9 +101,8 @@ const updateFile = async (req, res) => {
 
 //   res.set({
 //     'Content-Type': doc.mimetype,
-
 //     'Content-Length': doc.size,
-//     'Content-Disposition': `filename="${doc.name}"`, /* `attachment; filename="${doc.name}"` */
+//     'Content-Disposition': attachment; `filename="${doc.name}"`,
 //   });
 
 //   return res.send(doc.data);
@@ -127,6 +123,7 @@ const getFiles = async (req, res) => {
 module.exports = {
   makerPage,
   makeFile,
+  uploadImage,
   updateFile,
   getFiles,
   // retrieveImage,

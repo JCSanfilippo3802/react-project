@@ -16,11 +16,15 @@ const handleFile = (e) => {
         return false;
     }
 
-    const carrier = new FormData(e.target);
-
-    //If there's no data here, it would get the associated data since it'd be update. If there's no data at all, it's caught later when the image is being uploaded.
-
-    helper.sendPost(e.target.action, {name, carrier, year, author}, loadFilesFromServer);
+    if(e.target.id = "fileForm"){
+        helper.uploadFile(e.target, (obj) => {
+            const dataId = obj._id;
+            helper.sendPost(e.target.action, {name, dataId, year, author}, loadFilesFromServer);
+        });
+    }
+    else{
+        helper.sendPost(e.target.action, {name, year, author}, loadFilesFromServer);
+    }
 
     return false;
 }
@@ -33,6 +37,7 @@ const FileForm = (props) => {
             action="/maker"
             method="POST"
             className="fileForm"
+            encType="multipart/form-data"
         >
             <label htmlFor="name">Name: </label>
             <input id="fileName" type="text" name="name" placeholder="File Name" />
