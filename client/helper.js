@@ -43,7 +43,6 @@ const handleError = (message) => {
     });
 
     const result = await response.json();
-    document.getElementById('messages').classList.add('hidden');
   
     if(result.redirect) {
       window.location = result.redirect;
@@ -54,7 +53,7 @@ const handleError = (message) => {
     }
 
     if(handler) {
-        handler(result);
+      handler(result);
     }
 
     return false;

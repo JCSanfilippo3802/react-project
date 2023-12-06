@@ -24,7 +24,7 @@ const handlePassword = (e) => {
     return false;
 }
 
-const PasswordChangeWindow = (props) => {
+const PasswordWindow = (props) => {
     return (
         <form id="passwordChangeForm"
             name="passwordChangeForm"
@@ -39,12 +39,12 @@ const PasswordChangeWindow = (props) => {
             <input id="pass2" type="password" name="pass2" placeholder="retype password" />
             <input className="formSubmit" type="submit" value="Change Password" />
         </form>
-    );
+    )
 };
 
 const init = () => {
 
-    ReactDOM.render(<PasswordChangeWindow />,
+    ReactDOM.render(<PasswordWindow />,
         document.getElementById('content'));
 
 };

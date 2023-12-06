@@ -4,12 +4,14 @@ const mid = require('./middleware');
 const router = (app) => {
   app.get('/getFiles', mid.requiresLogin, controllers.File.getFiles);
   // app.get('/getImages', mid.requiresLogin, controllers.File.retrieveImage);
-  app.get('/upload', mid.requiresLogin, controllers.File.uploadImage);
+  app.post('/upload', mid.requiresLogin, controllers.File.uploadImage);
 
   app.get('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
   app.post('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.login);
+
   app.get('/password', mid.requiresLogin, controllers.Account.passwordPage);
 
+  app.get('/signup',mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
   app.post('/signup', mid.requiresSecure, mid.requiresLogout, controllers.Account.signup);
 
   app.get('/logout', mid.requiresLogin, controllers.Account.logout);

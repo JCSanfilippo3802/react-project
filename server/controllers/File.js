@@ -7,7 +7,7 @@ const makerPage = (req, res) => res.render('app');
 
 const uploadImage = async (req, res) => {
   if (!req.files || !req.files.imageData) {
-    return res.status(400).json({ error: 'No images were uploaded' });
+    return res.status(400).json({ error: 'No files were uploaded' });
   }
 
   const { imageData } = req.files;
@@ -30,6 +30,7 @@ const uploadImage = async (req, res) => {
 
 const makeFile = async (req, res) => {
   if (!req.body.name || !req.body.dataId || !req.body.year || !req.body.author) {
+    console.log(`${req.body.name}, ${req.body.dataId}, ${req.body.year}, ${req.body.author}`);
     return res.status(400).json({ error: 'Data missing!' });
   }
 
