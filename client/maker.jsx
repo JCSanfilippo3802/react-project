@@ -34,6 +34,10 @@ const handleFile = (e) => {
     return false;
 }
 
+const retrieveFile = (fileId) => {
+    helper.downloadFile(fileId);
+}
+
 const FileForm = (props) => {
     return (
         <form id="fileForm"
@@ -91,10 +95,10 @@ const FileList = (props) => {
 
         return (
                 <div key={file._id} className="file">
-                    <img src="/assets/img/placeholder.png" alt="placeholder" className="fileFace" />
                     <h3 className="fileName">Name: {file.name} </h3>
                     <h3 className="fileYear"> Year: {file.year} </h3>
                     <h3 className="fileAuthor"> Author: {file.author} </h3>
+                    <button className="fileDownload" onclick='retrieveFile(file.dataId)'>Download</button>
                 </div>
         );
     });

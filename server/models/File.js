@@ -10,8 +10,10 @@ const FileSchema = new mongoose.Schema({
     trim: true,
     set: setName,
   },
-  data: {
-    type: { type: mongoose.Types.ObjectId, ref: dataObject },
+  dataId: {
+    type: mongoose.Types.ObjectId,
+    ref: "Image",
+    required: true,
   },
   year: {
     type: Number,
@@ -32,7 +34,7 @@ const FileSchema = new mongoose.Schema({
 
 FileSchema.statics.toAPI = (doc) => ({
   name: doc.name,
-  data: doc.data,
+  dataId: doc.dataId,
   year: doc.year,
   author: doc.author,
 });

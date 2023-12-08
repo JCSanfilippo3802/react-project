@@ -30,13 +30,12 @@ const uploadImage = async (req, res) => {
 
 const makeFile = async (req, res) => {
   if (!req.body.name || !req.body.dataId || !req.body.year || !req.body.author) {
-    console.log(`${req.body.name}, ${req.body.dataId}, ${req.body.year}, ${req.body.author}`);
     return res.status(400).json({ error: 'Data missing!' });
   }
 
   const fileData = {
     name: req.body.name,
-    data: req.body.dataId,
+    dataId: req.body.dataId,
     year: req.body.year,
     author: req.body.author,
     owner: req.session.account._id,
@@ -44,9 +43,10 @@ const makeFile = async (req, res) => {
 
   try {
     const newFile = new File(fileData);
+    console.log(newFile);
     await newFile.save();
     return res.status(201).json({
-      name: newFile.name, data: newFile.data, year: newFile.year, author: newFile.author,
+      name: newFile.name, dataId: newFile.dataId, year: newFile.year, author: newFile.author,
     });
   } catch (err) {
     console.log(err);
