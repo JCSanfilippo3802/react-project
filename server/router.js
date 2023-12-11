@@ -10,13 +10,13 @@ const router = (app) => {
   app.post('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.login);
 
   app.get('/password', mid.requiresLogin, controllers.Account.passwordPage);
-  app.get('/subscribe', mid.requiresLogin, controllers.Account.becomeSubscriber);
 
   app.get('/signup', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
   app.post('/signup', mid.requiresSecure, mid.requiresLogout, controllers.Account.signup);
 
   app.get('/logout', mid.requiresLogin, controllers.Account.logout);
   app.post('/passwordChange', mid.requiresLogin, controllers.Account.changePassword);
+  app.post('/subscribe', mid.requiresLogin, controllers.File.becomeSubscriber);
 
   app.get('/maker', mid.requiresLogin, controllers.File.makerPage);
   app.post('/maker', mid.requiresLogin, controllers.File.makeFile);

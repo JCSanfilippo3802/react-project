@@ -6,6 +6,16 @@ const { Image } = models;
 
 const makerPage = (req, res) => res.render('app');
 
+const becomeSubscriber = async (req, res) => {
+  try {
+    await Account.findOneAndUpdate({ username: req.session.account.username }, { subscriber: true });
+    return res.status(204).json({ redirect: '/maker' });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: 'An error occured!' });
+  }
+};
+
 const uploadImage = async (req, res) => {
   if (!req.files || !req.files.imageData) {
     return res.status(400).json({ error: 'No files were uploaded' });
@@ -32,12 +42,12 @@ const uploadImage = async (req, res) => {
 const makeFile = async (req, res) => {
   if (!req.body.name || !req.body.dataId || !req.body.year || !req.body.author) {
     return res.status(400).json({ error: 'Data missing!' });
-  }
-  if( req.session.account.fileCount >= 3 && !req.session.account.subscriber )
-  {
-    return res.status(402).json({ error: 'Maximum number of files reached.'});
-  }
-
+  };
+  if(!req.session.account.subscriber) {
+    if( await File.find({ username: req.session.account.username} ).count >= 3) {
+      return res.status(402).json({ error: 'Maximum number of files reached.'});
+    };
+  };
   const fileData = {
     name: req.body.name,
     dataId: req.body.dataId,
@@ -48,9 +58,7 @@ const makeFile = async (req, res) => {
 
   try {
     const newFile = new File(fileData);
-    console.log(newFile);
     await newFile.save();
-    await Account.findOneAndUpdate({ username: req.session.account.username }, { fileCount: req.session.account.fileCount + 1 });
     return res.status(201).json({
       name: newFile.name, dataId: newFile.dataId, year: newFile.year, author: newFile.author,
     });
@@ -129,6 +137,7 @@ const getFiles = async (req, res) => {
 
 module.exports = {
   makerPage,
+  becomeSubscriber,
   makeFile,
   uploadImage,
   updateFile,

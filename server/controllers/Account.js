@@ -22,17 +22,7 @@ const changePassword = async (req, res) => {
   try {
     const hash = await Account.generateHash(pass);
     await Account.findOneAndUpdate({ username: req.session.account.username }, { password: hash });
-    return res.json({ redirect: '/maker' });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({ error: 'An error occured!' });
-  }
-};
-
-const becomeSubscriber = async (req, res) => {
-  try {
-    await Account.findOneAndUpdate({ username: req.session.account.username }, { subscriber: true });
-    return res.json({ redirect: '/maker' });
+    return res.status(204).json({ redirect: '/maker' });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: 'An error occured!' });
@@ -92,6 +82,5 @@ module.exports = {
   logout,
   signup,
   changePassword,
-  becomeSubscriber,
   passwordPage,
 };

@@ -92,13 +92,12 @@ const FileList = (props) => {
     }
 
     const fileNodes = props.files.map(file => {
-
         return (
                 <div key={file._id} className="file">
                     <h3 className="fileName">Name: {file.name} </h3>
                     <h3 className="fileYear"> Year: {file.year} </h3>
                     <h3 className="fileAuthor"> Author: {file.author} </h3>
-                    <button className="fileDownload" onclick='retrieveFile(file.dataId)'>Download</button>
+                    <button className="fileDownload" onclick="retrieveFile(file.dataId)">Download</button>
                 </div>
         );
     });
@@ -120,6 +119,14 @@ const loadFilesFromServer = async () => {
 }
 
 const init = () => {
+    const subscribeButton = document.getElementById('subscribeButton');
+
+    subscribeButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        helper.sendPost('/subscribe');
+        return false;
+    });
+    
     ReactDOM.render(
         <FileForm />,
         document.getElementById('makeFile')
