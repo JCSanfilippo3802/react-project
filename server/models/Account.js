@@ -31,6 +31,12 @@ const AccountSchema = new mongoose.Schema({
   password: {
     type: String,
   },
+  subscriber: {
+    type: Boolean,
+  },
+  fileCount: {
+    type: Number,
+  },
   createdDate: {
     type: Date,
     default: Date.now,

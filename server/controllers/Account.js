@@ -25,9 +25,16 @@ const changePassword = async (req, res) => {
     return res.json({ redirect: '/maker' });
   } catch (err) {
     console.log(err);
-    if (err.code === 11000) {
-      return res.status(400).json({ error: 'Username already in use!' });
-    }
+    return res.status(500).json({ error: 'An error occured!' });
+  }
+};
+
+const becomeSubscriber = async (req, res) => {
+  try {
+    await Account.findOneAndUpdate({ username: req.session.account.username }, { subscriber: true });
+    return res.json({ redirect: '/maker' });
+  } catch (err) {
+    console.log(err);
     return res.status(500).json({ error: 'An error occured!' });
   }
 };
@@ -66,7 +73,7 @@ const signup = async (req, res) => {
 
   try {
     const hash = await Account.generateHash(pass);
-    const newAccount = new Account({ username, password: hash });
+    const newAccount = new Account({ username, password: hash, subscriber: false });
     await newAccount.save();
     req.session.account = Account.toAPI(newAccount);
     return res.json({ redirect: '/maker' });
@@ -85,5 +92,6 @@ module.exports = {
   logout,
   signup,
   changePassword,
+  becomeSubscriber,
   passwordPage,
 };

@@ -1,5 +1,6 @@
 const models = require('../models');
 
+const { Account } = models;
 const { File } = models;
 const { Image } = models;
 
@@ -32,6 +33,10 @@ const makeFile = async (req, res) => {
   if (!req.body.name || !req.body.dataId || !req.body.year || !req.body.author) {
     return res.status(400).json({ error: 'Data missing!' });
   }
+  if( req.session.account.fileCount >= 3 && !req.session.account.subscriber )
+  {
+    return res.status(402).json({ error: 'Maximum number of files reached.'});
+  }
 
   const fileData = {
     name: req.body.name,
@@ -45,6 +50,7 @@ const makeFile = async (req, res) => {
     const newFile = new File(fileData);
     console.log(newFile);
     await newFile.save();
+    await Account.findOneAndUpdate({ username: req.session.account.username }, { fileCount: req.session.account.fileCount + 1 });
     return res.status(201).json({
       name: newFile.name, dataId: newFile.dataId, year: newFile.year, author: newFile.author,
     });
