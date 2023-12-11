@@ -8,10 +8,12 @@ const makerPage = (req, res) => res.render('app');
 
 const becomeSubscriber = async (req, res) => {
   try {
-    await Account.findOneAndUpdate({ username: req.session.account.username }, { subscriber: true });
+    await Account.findOneAndUpdate(
+      { username: req.session.account.username },
+      { subscriber: true },
+    );
     return res.status(204).json({ redirect: '/maker' });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({ error: 'An error occured!' });
   }
 };
@@ -32,7 +34,6 @@ const uploadImage = async (req, res) => {
       fileId: doc._id,
     });
   } catch (err) {
-    console.log(err);
     return res.status(400).json({
       error: 'Something went wrong uploading image!',
     });
@@ -42,12 +43,12 @@ const uploadImage = async (req, res) => {
 const makeFile = async (req, res) => {
   if (!req.body.name || !req.body.dataId || !req.body.year || !req.body.author) {
     return res.status(400).json({ error: 'Data missing!' });
-  };
-  if(!req.session.account.subscriber) {
-    if( await File.find({ username: req.session.account.username} ).count >= 3) {
-      return res.status(402).json({ error: 'Maximum number of files reached.'});
-    };
-  };
+  }
+  if (!req.session.account.subscriber) {
+    if (await File.find({ username: req.session.account.username }).count >= 3) {
+      return res.status(402).json({ error: 'Maximum number of files reached.' });
+    }
+  }
   const fileData = {
     name: req.body.name,
     dataId: req.body.dataId,
@@ -63,7 +64,6 @@ const makeFile = async (req, res) => {
       name: newFile.name, dataId: newFile.dataId, year: newFile.year, author: newFile.author,
     });
   } catch (err) {
-    console.log(err);
     if (err.code === 11000) {
       return res.status(400).json({ error: 'File already exists!' });
     }
@@ -92,7 +92,6 @@ const updateFile = async (req, res) => {
       name: fileData.name, year: fileData.year, author: fileData.author,
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({ error: 'An error occured updating file!' });
   }
 };
@@ -106,7 +105,6 @@ const retrieveImage = async (req, res) => {
   try {
     doc = await File.findOne({ _id: req.query._id }).exec();
   } catch (err) {
-    console.log(err);
     return res.status(400).json({ error: 'Something went wrong retrieving file!' });
   }
 
@@ -130,7 +128,6 @@ const getFiles = async (req, res) => {
 
     return res.json({ files: docs });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({ error: 'Error retrieving files!' });
   }
 };

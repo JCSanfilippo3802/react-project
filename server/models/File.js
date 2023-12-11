@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const _ = require('underscore');
-const dataObject = require('./Image');
 
 const setName = (name) => _.escape(name).trim();
 
@@ -12,7 +11,7 @@ const FileSchema = new mongoose.Schema({
   },
   dataId: {
     type: mongoose.Types.ObjectId,
-    ref: "Image",
+    ref: 'Image',
     required: true,
   },
   year: {

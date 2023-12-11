@@ -24,7 +24,6 @@ const changePassword = async (req, res) => {
     await Account.findOneAndUpdate({ username: req.session.account.username }, { password: hash });
     return res.status(204).json({ redirect: '/maker' });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({ error: 'An error occured!' });
   }
 };
@@ -68,7 +67,6 @@ const signup = async (req, res) => {
     req.session.account = Account.toAPI(newAccount);
     return res.json({ redirect: '/maker' });
   } catch (err) {
-    console.log(err);
     if (err.code === 11000) {
       return res.status(400).json({ error: 'Username already in use!' });
     }
