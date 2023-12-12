@@ -34,10 +34,6 @@ const handleFile = (e) => {
     return false;
 }
 
-const retrieveFile = (fileId) => {
-    helper.downloadFile(fileId);
-}
-
 const FileForm = (props) => {
     return (
         <form id="fileForm"
@@ -92,13 +88,17 @@ const FileList = (props) => {
     }
 
     const fileNodes = props.files.map(file => {
+        const fileLink = `/retrieve?dataId=${file.dataId}`;
+
         return (
-                <div key={file._id} className="file">
-                    <h3 className="fileName">Name: {file.name} </h3>
-                    <h3 className="fileYear"> Year: {file.year} </h3>
-                    <h3 className="fileAuthor"> Author: {file.author} </h3>
-                    <button className="fileDownload" onclick="retrieveFile(file.dataId)">Download</button>
+            <div key={file._id} className="file">
+                <h3 className="fileName">Name: {file.name} </h3>
+                <h3 className="fileYear"> Year: {file.year} </h3>
+                <h3 className="fileAuthor"> Author: {file.author} </h3>
+                <div className="fileDownload" class="downloadButton">
+                    <a href={`/retrieve?dataId=${file.dataId}`} target="_blank">Download</a>
                 </div>
+            </div>
         );
     });
 

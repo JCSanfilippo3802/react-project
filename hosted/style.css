@@ -30,13 +30,13 @@ nav:nth-child(1) {
     padding: 5px;
     padding-top: 12px;
     padding-left: 20px;
-    color: white;
+    color: black;
     font-size: 1.3em;
     float: left;
 }
 
 .navlink a, .navlink a:link, .navlink a:visited, .navlink a:hover, .navlink a:active {
-    color: white;
+    color: black;
     text-decoration: none;
     padding: 5px;
     border-radius: 4px;
@@ -49,31 +49,23 @@ nav:nth-child(1) {
     background-color: #20964d;
 }
 
-.fileForm {
-    width: 1200px;
-}
-
-.updateForm {
-    width: 900px;
-}
-
 .fileForm, .updateForm {
     border: 2px solid #378053;
-    height: 35px;
-    margin-top:0px;
-    padding-top:10px;
+    width: 900px;
+    height: 70px;
+    margin-top:10px;
+    padding-top:20px;
     background-color: #73eba1;
-    border-bottom-right-radius: 4px;
-    border-top-right-radius: 4px;
+    border-radius: 4px;
 }
 
 .fileForm label, .updateForm label {
     display: inline-block;
-    width: 75px;
+    width: 85px;
     margin-left: 10px;
     font-size: 1.2em;
     float: left;
-    color: white;
+    color: black;
 }
 
 .fileForm input, .updateForm input {
@@ -84,15 +76,15 @@ nav:nth-child(1) {
     transition: background-color 0.4s ease;
     display: inline;
     width: 90px;
-    background-color: #73eba1;
+    background-color: #20964d;
     border-radius: 2px;
-    color: white;
+    color: black;
     text-decoration: none;
     margin-left: 15px;
 }
 
 .makeFileSubmit:link, .updateFileSubmit:link, .makeFileSubmit:visited, .updateFileSubmit:visited, .makeFileSubmit:hover, .updateFileSubmit:hover, .makeFileSubmit:active, .updateFileSUbmit:active {
-    color: white;
+    color: black;
 }
 
 .makeFileSubmit:hover, .updateFileSubmit:hover {
@@ -132,17 +124,38 @@ nav:nth-child(1) {
     border-radius: 2px;
     border-color: #20964d;
     padding: 3px 0px;
-    color: white;
+    color: black;
     text-decoration: none;
 }
 
 .formSubmit:link, .formSubmit:visited, .formSubmit:hover, .formSubmit:active {
-    color: white;
+    color: black;
 }
 
 .formSubmit:hover {
     transition: background-color 0.4s ease;
     background-color: #378053;
+}
+
+.downloadButton {
+    margin: auto;
+    color: black;
+    font-size: 1.8em;
+    float: left;
+}
+
+.downloadButton a, .downloadButton a:link, .downloadButton a:visited, .downloadButton a:hover, .downloadButton a:active {
+    color: black;
+    text-decoration: none;
+    padding: 5px;
+    border-radius: 4px;
+    background-color: #2359ce;
+    transition: background-color 0.4s ease;
+}
+
+.downloadButton a:hover {
+    transition: background-color 0.8s ease;
+    background-color: #5482e6;
 }
 
 #user, #pass, #pass2 {
@@ -161,34 +174,51 @@ nav:nth-child(1) {
     display: none;
 }
 
-#fileMessage {
-    top: 250px;
+
+#ad {
+    height: 500px;
+    width: 651px;
+    position: fixed;
+    top: 400px;
+    right: 30px;
+}
+
+#message {
+    top: 450px;
     width: 250px;
     height: 650px;
     position: absolute;
     z-index: 200;
-    right: 0px;
+    left: 0px;
     overflow: hidden;
 }
 
-#fileMessage h3 {
+#message h3 {
     width: 200px;
     position: absolute;
-    top: 0px;
+    top: 70px;
     left: 20px;
 }
 
-#speech {
-    height: 120px;
+#warning {
+    height: 250px;
     width: 250px;
     z-index:300;
 }
 
 #errorMessage {
-    font-size: 1.2em;
+    font-size: 1.7em;
     font-weight: bold;
     color: red;
     font-style: italic;
+}
+
+#submissionForms
+{
+    float: right;
+    height: 400px;
+    width: 900px;
+    margin: 30px;
 }
 
 #file {
@@ -207,7 +237,7 @@ nav:nth-child(1) {
     min-width: 400px;
     border: 2px solid #73eba1;
     border-radius: 4px;
-    margin: 0 auto;
+    margin: 0 15px;
     margin-top: 100px;
 }
 
@@ -222,6 +252,8 @@ nav:nth-child(1) {
     padding: 10px;
     min-height:60px;
     overflow: hidden;
+    color: black;
+    display: flex;
 }
 
 .file:hover {
@@ -229,16 +261,6 @@ nav:nth-child(1) {
     border-color: rgba(255,255,255, 0.8);
     transition: background-color 2.6s ease-out;
     background-color: #20964d;
-}
-
-img.fileFace {
-    margin-left: 25px;
-    margin-right: 10px;
-    height: 50px;
-    width: 50px;
-    border-radius: 4px;
-    margin-top:10px;
-    float:left;
 }
 
 h3.emptyFile {
@@ -253,11 +275,11 @@ h3.fileName {
     float:left;
     width: 200px;
     font-weight: bold;
-    padding-left: 65px;
+    padding-left: 30px;
     font-size: 1.5em;
 }
 
-h3.fileAge {
+h3.fileYear {
     float:right;
     text-align: left;
     width: 100px;
@@ -266,7 +288,16 @@ h3.fileAge {
     font-size: 1.5em;
 }
 
-h3.fileLevel {
+.file button {
+    width: 250px;
+    height: 100px;
+    background-color: black;
+    color: #73eba1;
+    font-size: 2rem;
+    float: right;
+}
+
+h3.fileAuthor {
     float:right;
     text-align: left;
     width: 100px;

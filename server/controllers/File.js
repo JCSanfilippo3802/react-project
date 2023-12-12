@@ -97,13 +97,13 @@ const updateFile = async (req, res) => {
 };
 
 const retrieveImage = async (req, res) => {
-  if (!req.query._id) {
+  if (!req.query.dataId) {
     return res.status(400).json({ error: 'Missing file id!' });
   }
 
   let doc;
   try {
-    doc = await File.findOne({ _id: req.query._id }).exec();
+    doc = await Image.findOne({ _id: req.query.dataId }).exec();
   } catch (err) {
     return res.status(400).json({ error: 'Something went wrong retrieving file!' });
   }
@@ -124,7 +124,7 @@ const retrieveImage = async (req, res) => {
 const getFiles = async (req, res) => {
   try {
     const query = { owner: req.session.account._id };
-    const docs = await File.find(query).select('name data year author').lean().exec();
+    const docs = await File.find(query).select('name dataId year author').lean().exec();
 
     return res.json({ files: docs });
   } catch (err) {

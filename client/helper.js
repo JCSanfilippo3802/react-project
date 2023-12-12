@@ -59,12 +59,6 @@ const handleError = (message) => {
     return false;
   };
 
-  const downloadFile = async (fileId) => {
-    const response = await fetch(`/retrieve?_id:${fileId}`, {
-      method: 'GET',
-    });
-  }
-
   const hideError = () => {
     document.getElementById('message').classList.add('hidden');
    };
@@ -73,6 +67,5 @@ const handleError = (message) => {
     handleError,
     sendPost,
     uploadFile,
-    downloadFile,
     hideError,
    };
